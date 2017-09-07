@@ -15,7 +15,7 @@ class SocialSignInApp(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (DocIDPage): # and IdlePage, RegPage
+        for F in (DocIDPage, IdlePage): # and RegPage
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -34,6 +34,7 @@ class SocialSignInApp(tk.Tk):
         frame.tkraise()
 
 
+
 class DocIDPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -41,14 +42,14 @@ class DocIDPage(tk.Frame):
         self.createDocIDWidgets()
 
     def createDocIDWidgets(self):
-        instructionsLabel = tk.Label(self, text='[How to get Doc IDs]')
+        instructionsLabel = tk.Label(self, text="[How to get Doc IDs]")
         instructionsLabel.grid(row=0, column=0, columnspan=2)
 
-        masterLabel = tk.Label(self, text='Master ID:')
+        masterLabel = tk.Label(self, text="Master ID:")
         masterLabel.grid(row=1, column=0)
-        danceLabel = tk.Label(self, text='Dance ID:')
+        danceLabel = tk.Label(self, text="Dance ID:")
         danceLabel.grid(row=2, column=0)
-        earlyLabel = tk.Label(self, text='Early ID:')
+        earlyLabel = tk.Label(self, text="Early ID:")
         earlyLabel.grid(row=3, column=0)
 
         masterEntry = tk.Entry(self, width=45)
@@ -58,11 +59,21 @@ class DocIDPage(tk.Frame):
         earlyEntry = tk.Entry(self, width=45)
         earlyEntry.grid(row=3, column=1)
         
-        goButton = tk.Button(self, text='Go') #, command=lambda: controller.show_frame("IdlePage"))
+        goButton = tk.Button(self, text="Go", command=lambda: self.controller.show_frame("IdlePage"))
         goButton.grid(row=4, column=0, columnspan=2)
 
 
+class IdlePage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.createIdleWidgets()
 
-#        nameEntry = tk.Entry(self.RegFrame)
-#        nameEntry.grid(row=0, column=0)
+    def createIdleWidgets(self):
+        nameEntry = tk.Entry(self)
+        nameEntry.grid(row=0, column=0)
+
+
+
+
         
