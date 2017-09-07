@@ -1,5 +1,5 @@
 import Tkinter as tk
-
+import tkFont
 
 class SocialSignInApp(tk.Tk):
     
@@ -15,7 +15,7 @@ class SocialSignInApp(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (DocIDPage, IdlePage): # and RegPage
+        for F in (DocIDPage, IdlePage, RegPage):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -42,6 +42,13 @@ class DocIDPage(tk.Frame):
         self.createDocIDWidgets()
 
     def createDocIDWidgets(self):
+        self.rowconfigure(0, pad=5)
+        self.rowconfigure(1, pad=5)
+        self.rowconfigure(2, pad=5)
+        self.rowconfigure(3, pad=5)
+        self.rowconfigure(4, pad=5)
+        self.columnconfigure(0, pad=5)
+        
         instructionsLabel = tk.Label(self, text="[How to get Doc IDs]")
         instructionsLabel.grid(row=0, column=0, columnspan=2)
 
@@ -53,11 +60,11 @@ class DocIDPage(tk.Frame):
         earlyLabel.grid(row=3, column=0)
 
         masterEntry = tk.Entry(self, width=45)
-        masterEntry.grid(row=1, column=1)
+        masterEntry.grid(row=1, column=1, padx=5)
         danceEntry = tk.Entry(self, width=45)
-        danceEntry.grid(row=2, column=1)
+        danceEntry.grid(row=2, column=1, padx=5)
         earlyEntry = tk.Entry(self, width=45)
-        earlyEntry.grid(row=3, column=1)
+        earlyEntry.grid(row=3, column=1, padx=5)
         
         goButton = tk.Button(self, text="Go", command=lambda: self.controller.show_frame("IdlePage"))
         goButton.grid(row=4, column=0, columnspan=2)
@@ -70,10 +77,52 @@ class IdlePage(tk.Frame):
         self.createIdleWidgets()
 
     def createIdleWidgets(self):
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+        self.columnconfigure(0, weight=1)
+
+        scanLabel = tk.Label(self, text="Scan a card", font=tkFont.Font(size=14))
+        scanLabel.grid(row=0, column=0)
+
+        noIDButton = tk.Button(self, text="No ID", command=lambda: self.controller.show_frame("RegPage"))
+        noIDButton.grid(row=1, column=0, ipady=10, ipadx=10, pady=10, padx=10, sticky="se")
+
+
+class RegPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.createRegWidgets()
+
+    def createRegWidgets(self):
         nameEntry = tk.Entry(self)
-        nameEntry.grid(row=0, column=0)
+        nameEntry.grid(row=0, column=0, padx=5, sticky="sw")
+        rcsEntry = tk.Entry(self)
+        rcsEntry.grid(row=1, column=0, padx=5, sticky="nw")
 
+        rfidLabel = tk.Label(self, text="RFID #:")
+        rfidLabel.grid(row=2, column=0, padx=5, sticky="w")
 
+        membershipFrame = tk.Frame(self, borderwidth=1, relief=tk.GROOVE)
+        membershipFrame.grid(row=0, rowspan=2, column=1, columnspan=2, pady=5)
+        memberCheckbutton = tk.Checkbutton(membershipFrame, text="Member of Club")
+        memberCheckbutton.grid()
+        self.memberTypeVar = tk.StringVar()
+        memberType = tk.OptionMenu(membershipFrame, self.memberTypeVar, "Student", "Community", "Former")
+        memberType.grid()
 
+        earlyCheckbutton = tk.Checkbutton(self, text="Signed Up Early")
+        earlyCheckbutton.grid(row=2, column=1, columnspan=2, sticky="w")
+
+        emailCheckbutton = tk.Checkbutton(self, text="On Email List")
+        emailCheckbutton.grid(row=3, column=1, columnspan=2, sticky="w")
+
+        amountDueLabel = tk.Label(self, text="Amount Due: $3", font=tkFont.Font(size=12))
+        amountDueLabel.grid(row=4, column=0)
+
+        cancelButton = tk.Button(self, text="Cancel", background="#EB5757")
+        cancelButton.grid(row=4, column=1, pady=10, sticky="se")
+        submitButton = tk.Button(self, text="Submit", background="#6FCF97")
+        submitButton.grid(row=4, column=2, pady=10, sticky="se")
 
         
