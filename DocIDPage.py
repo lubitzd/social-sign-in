@@ -2,10 +2,12 @@ import Tkinter as tk
 
 
 class DocIDPage(tk.Frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent, controller, lc_in):
         tk.Frame.__init__(self, parent)
+        self.lc = lc_in
         self.controller = controller
         self.createDocIDWidgets()
+
 
     def createDocIDWidgets(self):
         self.rowconfigure(0, pad=5)
@@ -27,10 +29,14 @@ class DocIDPage(tk.Frame):
 
         # Master Doc ID
         self.masterDocIDVar = tk.StringVar()
+        if __debug__:
+            self.masterDocIDVar.set("1BVedAhtD37Ocy4CGXiJPQ7Rrc8Va5G0akSqQVXFqS_0")
         masterEntry = tk.Entry(self, width=45, textvariable=self.masterDocIDVar)
         masterEntry.grid(row=1, column=1, padx=5)
         # Dance Doc ID
         self.danceDocIDVar = tk.StringVar()
+        if __debug__:
+            self.masterDocIDVar.set("1f1XkRPCYjhU604NQoyxYRSk2kGxTr25rYCYz4pgcD-o")
         danceEntry = tk.Entry(self, width=45, textvariable=self.danceDocIDVar)
         danceEntry.grid(row=2, column=1, padx=5)
         # Early Doc ID
@@ -38,5 +44,10 @@ class DocIDPage(tk.Frame):
         earlyEntry = tk.Entry(self, width=45, textvariable=self.earlyDocIDVar)
         earlyEntry.grid(row=3, column=1, padx=5)
         
-        goButton = tk.Button(self, text="Go", command=lambda: self.controller.show_frame("IdlePage"))
+        goButton = tk.Button(self, text="Go", command=self.goButtonCallback)
         goButton.grid(row=4, column=0, columnspan=2)
+
+
+    def goButtonCallback(self):
+        self.lc.init_sheets(self.masterDocIDVar.get(), self.danceDocIDVar.get(), self.earlyDocIDVar.get())
+        self.controller.show_frame("IdlePage")

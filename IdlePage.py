@@ -3,8 +3,9 @@ import tkFont
 
 
 class IdlePage(tk.Frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent, controller, lc_in):
         tk.Frame.__init__(self, parent)
+        self.lc = lc_in
         self.controller = controller
         self.createIdleWidgets()
 

@@ -92,6 +92,7 @@ class SheetManager:
         for i in range(len(self.headers)):
             if self.headers[i] == label:
                 return letter(i)
+        # Not found
         return 0
 
     

@@ -1,5 +1,7 @@
 import Tkinter as tk
 import tkFont
+
+import LogicController as LC
 import DocIDPage
 import IdlePage
 import RegPage
@@ -9,6 +11,10 @@ class GuiHandler(tk.Tk):
     
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+
+        # First set up the Logic Controller, which each GUI will
+        # use to interact with the sheets
+        self.lc = LC.LogicController()
 
         # the container is where we'll stack a bunch of frames
         # on top of each other, then the one we want visible
@@ -21,7 +27,7 @@ class GuiHandler(tk.Tk):
         self.frames = {}
         for F in (DocIDPage.DocIDPage, IdlePage.IdlePage, RegPage.RegPage):
             page_name = F.__name__
-            frame = F(parent=container, controller=self)
+            frame = F(parent=container, controller=self, lc_in=self.lc)
             self.frames[page_name] = frame
 
             # put all of the pages in the same location;
