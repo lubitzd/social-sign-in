@@ -24,7 +24,7 @@ class IdlePage(tk.Frame):
         or1Label = tk.Label(self, text="or")
         or1Label.grid(row=1, column=1, pady=5)
 
-        newButton = tk.Button(self, text="New Account", command=lambda: self.controller.show_frame("RegPage"))
+        newButton = tk.Button(self, text="New Account", command=self.newAccountCallback)
         newButton.grid(row=2, column=1, ipady=5, ipadx=10)
 
         or2Label = tk.Label(self, text="or")
@@ -33,10 +33,17 @@ class IdlePage(tk.Frame):
         nameLabel = tk.Label(self, text="Name:")
         nameLabel.grid(row=4, column=0, sticky="e")
 
-        nameEntry = tk.Entry(self)
+        self.nameVar = tk.StringVar()
+        nameEntry = tk.Entry(self, textvariable=self.nameVar)
         nameEntry.grid(row=4, column=1, padx=5)
 
-        searchButton = tk.Button(self, text="Search")
+        searchButton = tk.Button(self, text="Search", command=self.searchByNameCallback)
         searchButton.grid(row=4, column=2, sticky="w")
 
+
+    def newAccountCallback(self):
+        
+
+    def searchByNameCallback(self):
+        self.controller.show_frame("RegPage")
 
