@@ -76,7 +76,7 @@ class SheetManager:
         # Set internal Doc ID
         self.doc_id = doc_id
         # Read the first row of the sheet (headers)
-        self.headers = self.read("Sheet1!1:1")[0]
+        self.headers = self.read("1:1")[0]
 
 
     # Returns array of values in the given range
@@ -85,6 +85,7 @@ class SheetManager:
         result = self.service.spreadsheets().values().get(
                 spreadsheetId=self.doc_id, range=range_in).execute()
         return result.get('values', [])
+
 
     # Searches first row (header) for specified label
     # returns letter index of desired column

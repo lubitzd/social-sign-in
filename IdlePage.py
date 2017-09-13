@@ -2,6 +2,7 @@ import Tkinter as tk
 import tkFont
 
 
+# Hangs out and then finds what row in the sheet to pull
 class IdlePage(tk.Frame):
     def __init__(self, parent, controller, lc_in):
         tk.Frame.__init__(self, parent)
@@ -41,9 +42,14 @@ class IdlePage(tk.Frame):
         searchButton.grid(row=4, column=2, sticky="w")
 
 
+    # Find the next open row in the master sheet
     def newAccountCallback(self):
-        
+        row = self.lc.find_open_row("master")
+        self.lc.set_current_row(row)
+        self.controller.show_frame("RegPage")
+
 
     def searchByNameCallback(self):
+        self.lc.search("Name", self.nameVar.get())
         self.controller.show_frame("RegPage")
 

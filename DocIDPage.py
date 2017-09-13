@@ -41,6 +41,8 @@ class DocIDPage(tk.Frame):
         danceEntry.grid(row=2, column=1, padx=5)
         # Early Doc ID
         self.earlyDocIDVar = tk.StringVar()
+        if __debug__:
+            self.earlyDocIDVar.set("10goWvPEd8_n4Vd03PzXaukNX64rCMX0Tuzb55TR0u7M")
         earlyEntry = tk.Entry(self, width=45, textvariable=self.earlyDocIDVar)
         earlyEntry.grid(row=3, column=1, padx=5)
         
