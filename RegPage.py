@@ -1,7 +1,6 @@
 import Tkinter as tk
 import tkFont
 
-
 class RegPage(tk.Frame):
     def __init__(self, parent, controller, lc_in):
         tk.Frame.__init__(self, parent)
