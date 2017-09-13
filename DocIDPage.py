@@ -51,5 +51,7 @@ class DocIDPage(tk.Frame):
 
 
     def goButtonCallback(self):
+        self.controller.busy()
         self.lc.init_sheets(self.masterDocIDVar.get(), self.danceDocIDVar.get(), self.earlyDocIDVar.get())
+        self.controller.not_busy()
         self.controller.show_frame("IdlePage")

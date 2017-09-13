@@ -43,3 +43,11 @@ class GuiHandler(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
+    def busy(self):
+        self.config(cursor="watch")
+        self.update_idletasks()
+
+    def not_busy(self):
+        self.config(cursor="")
+        self.update_idletasks()
+
