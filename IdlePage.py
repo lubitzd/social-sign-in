@@ -16,6 +16,7 @@ class IdlePage(tk.Frame):
         self.rowconfigure(2, weight=1)
         self.rowconfigure(3, weight=1)
         self.rowconfigure(4, weight=1)
+        self.rowconfigure(5, weight=1)
         self.columnconfigure(0, weight=1)
         self.columnconfigure(2, weight=1)
 
@@ -41,6 +42,16 @@ class IdlePage(tk.Frame):
         searchButton = tk.Button(self, text="Search", command=self.searchByNameCallback)
         searchButton.grid(row=4, column=2, sticky="w")
 
+        self.errorLabelVar = tk.StringVar()
+        self.errorLabelVar.set("No match found")
+        self.errorLabel = tk.Label(self, textvariable=self.errorLabelVar, fg="#EB1717")
+        self.errorLabel.after(1000, self.hideErrorLabel)
+        self.errorLabel.grid(row=5, column=1, pady=2, sticky="n")
+
+
+    def hideErrorLabel(self):
+        self.errorLabelVar.set("")
+
 
     # Find the next open row in the master sheet
     def newAccountCallback(self):
@@ -50,6 +61,11 @@ class IdlePage(tk.Frame):
 
 
     def searchByNameCallback(self):
-        self.lc.search("Name", self.nameVar.get())
+        
+        (already_logged, index) = self.lc.search("Name", self.nameVar.get())
+        if index == -1:
+            self.errorLabelVar.set("No match found")
+            self.errorLabel.after(6000, self.hideErrorLabel)
+
         self.controller.show_frame("RegPage")
 

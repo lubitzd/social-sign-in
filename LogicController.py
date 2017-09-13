@@ -12,8 +12,10 @@ class LogicController:
         self.docs = {"master" : self.master_doc, "dance" : self.dance_doc, \
                       "early" : self.early_doc}
 
+
     def set_current_row(self, row_in):
         self.current_row = row_in
+
 
     def find_open_row(self, sheet):
         # Read the first column and get its length
@@ -23,8 +25,9 @@ class LogicController:
             print "DEBUG: Found open slot in " + sheet + " at " + str(rows + 1)
         return rows + 1
 
+
+    # Do the actual searching, return row index or -1 if not found
     def find_row(self, sheet, heading, label):
-        # Do the actual searching, return row index
         doc = self.docs[sheet]
         col = doc.get_column_letter(heading)
         # the list comp here 'unpacks' each one-element list
@@ -38,15 +41,29 @@ class LogicController:
             index = -1
 
         if __debug__:
-            print "DEBUG: fininding " + label.lower() + " in " + str(column) + " at " + str(index)
+            print "DEBUG: fininding " + label.lower() + " in " \
+                    + sheet + "'s " + str(column) + " at " + str(index)
 
         return index
 
 
+    # Looks for the specified credential in the database
+    # Returns tuple: (already_logged, index_in_master/-1 if not found)
     def search(self, heading, label):
-        # First search the dance sheet
-        # Then the master sheet
-        # Also read early sheet
-        self.find_row("master", heading, label)
+        # First check the master sheet
+        master_row = self.find_row("master", heading, label)
+        # If there's no match
+        if master_row == -1:
+            return (False, -1)
+        
+        # User exists in master, now check dance sheet
+        dance_row = self.find_row("dance", heading, label)
+        # If they've already been logged in the dance sheet
+        if dance_row >= 0:
+            return (True, master_row)
+
+        # Else add a new user
+        return (False, master_row)
+
 
 
