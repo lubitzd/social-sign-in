@@ -27,17 +27,18 @@ class LogicController:
         # Do the actual searching, return row index
         doc = self.docs[sheet]
         col = doc.get_column_letter(heading)
-        # the list comp here 'unpacks' each singleton list
+        # the list comp here 'unpacks' each one-element list
         # to make a list of vals of the column
-        column = [x[0] for x in doc.read(col + ":" + col)]
+        # it also converts to lower case for easier matching
+        column = [x[0].lower() for x in doc.read(col + ":" + col)]
         try:
             # Sheets are 1-indexed
-            index = column.index(label) + 1
+            index = column.index(label.lower()) + 1
         except ValueError:
             index = -1
 
         if __debug__:
-            print "DEBUG: fininding " + label + " in " + str(column) + " at " + str(index)
+            print "DEBUG: fininding " + label.lower() + " in " + str(column) + " at " + str(index)
 
         return index
 
