@@ -13,6 +13,9 @@ class LogicController:
                       "early" : self.early_doc}
 
 
+    def set_calculate_amt(self, calc_in):
+        self.calculate_amt = calc_in
+
     def set_current_row(self, row_in):
         self.current_row = row_in
 

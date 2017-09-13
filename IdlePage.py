@@ -43,9 +43,7 @@ class IdlePage(tk.Frame):
         searchButton.grid(row=4, column=2, sticky="w")
 
         self.errorLabelVar = tk.StringVar()
-        #self.errorLabelVar.set("No match found")
         self.errorLabel = tk.Label(self, textvariable=self.errorLabelVar, fg="#EB1717")
-        #self.errorLabel.after(1000, self.hideErrorLabel)
         self.errorLabel.grid(row=5, column=1, pady=2, sticky="n")
         self.hideErrorLabel()
 
@@ -60,19 +58,28 @@ class IdlePage(tk.Frame):
 
     # Find the next open row in the master sheet
     def newAccountCallback(self):
+        self.controller.busy()
         row = self.lc.find_open_row("master")
         self.lc.set_current_row(row)
+        self.controller.not_busy()
         self.controller.show_frame("RegPage")
 
 
     def searchByNameCallback(self):
-        
+        self.controller.busy()
         (already_logged, index) = self.lc.search("Name", self.nameVar.get())
+
         # If name not found
         if index == -1:
-            # Display error, then quit
+            # Display error, then do nothing
             self.showErrorLabel()
+            self.controller.not_busy()
             return
 
+        # If we've already seen this person, don't calc amt (i.e. display $0)
+        self.lc.set_calculate_amt(not already_logged)
+
+        
+        self.controller.not_busy()
         self.controller.show_frame("RegPage")
 

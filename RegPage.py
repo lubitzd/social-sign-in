@@ -60,9 +60,11 @@ class RegPage(tk.Frame):
         amountDueNumLabel.grid(row=4, column=2, sticky="w")
 
         cancelButton = tk.Button(self, text="Cancel", background="#EB5757", \
-                        command=lambda: self.controller.show_frame("IdlePage"))
+                        command=self.cancelButtonCallback)
         cancelButton.grid(row=4, column=3, pady=10, sticky="se")
         submitButton = tk.Button(self, text="Submit", background="#6FCF97")
         submitButton.grid(row=4, column=4, pady=10, sticky="se")
 
-        
+
+    def cancelButtonCallback(self):
+        self.controller.show_frame("IdlePage")
