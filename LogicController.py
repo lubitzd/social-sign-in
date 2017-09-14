@@ -30,6 +30,9 @@ class LogicController:
     def get_column_index(self, sheet, label):
         return self.docs[sheet].get_column_index(label)
 
+    def get_column_letter(self, sheet, label):
+        return self.docs[sheet].get_column_letter(label)
+
     def get_headers_length(self, sheet):
         return self.docs[sheet].get_headers_length()
 
@@ -40,12 +43,15 @@ class LogicController:
         lst += extras
 
 
-    def read_row(self, sheet, index):
-        data = self.docs[sheet].read(str(index) + ":" + str(index))
+    def read_row(self, sheet, row):
+        data = self.docs[sheet].read(str(row) + ":" + str(row))
         if len(data) > 0:
             # The [0] unpacks the list from the list
             return data[0]
         return data
+
+    def read_column(self, sheet, col):
+        return [x[0] for x in self.docs[sheet].read(col + ":" + col)]
 
 
     def find_open_row(self, sheet):
