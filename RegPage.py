@@ -83,12 +83,13 @@ class RegPage(tk.Frame):
 
         # Read the master doc
         data = self.lc.read_row("master", master_row)
+        self.lc.inflate_list(data, self.lc.get_headers_length("master"), "")
         if __debug__:
             print "populating reg page with " + str(data)
 
-
-        # Name field
-      #  if "Name" in data       
+        # If we're not looking at a blank row
+        #if len(data) > 0:
+        # Name field   
         name_index = self.lc.get_column_index("master", "Name")
         self.nameVar.set(data[name_index])
 
