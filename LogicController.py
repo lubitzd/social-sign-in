@@ -30,6 +30,15 @@ class LogicController:
     def get_column_index(self, sheet, label):
         return self.docs[sheet].get_column_index(label)
 
+    def get_headers_length(self, sheet):
+        return self.docs[sheet].get_headers_length()
+
+
+    def inflate_list(self, lst, length, val):
+        needed = length - len(lst)
+        extras = [val] * needed
+        lst += extras
+
 
     def read_row(self, sheet, index):
         data = self.docs[sheet].read(str(index) + ":" + str(index))
@@ -40,8 +49,9 @@ class LogicController:
 
 
     def find_open_row(self, sheet):
-        # Read the first column and get its length
-        rows = len(self.docs[sheet].read("A:A"))
+        # Read the name & rcsID columns and get the length
+        rows = len(self.docs[sheet].read(self.docs[sheet].get_column_letter("Name") \
+                               + ":" + self.docs[sheet].get_column_letter("RCS ID")))
         # The row after the last one is open
         if __debug__:
             print "DEBUG: Found open slot in " + sheet + " at " + str(rows + 1)

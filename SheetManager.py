@@ -100,5 +100,7 @@ class SheetManager:
     def get_column_letter(self, label):
         return letter(self.get_column_index(label))
 
-    
+    def get_headers_length(self):
+        return len(self.headers)
+
 
