@@ -87,12 +87,13 @@ class RegPage(tk.Frame):
         if __debug__:
             print "populating reg page with " + str(data)
 
-        # If we're not looking at a blank row
-        #if len(data) > 0:
         # Name field   
         name_index = self.lc.get_column_index("master", "Name")
         self.nameVar.set(data[name_index])
 
+        # RCS (or email) field
+        rcs_index = self.lc.get_column_index("master", "RCS ID")
+        self.rcsVar.set(data[rcs_index])
 
 
 
