@@ -62,9 +62,19 @@ class RegPage(tk.Frame):
         cancelButton = tk.Button(self, text="Cancel", background="#EB5757", \
                         command=self.cancelButtonCallback)
         cancelButton.grid(row=4, column=3, pady=10, sticky="se")
-        submitButton = tk.Button(self, text="Submit", background="#6FCF97")
+        submitButton = tk.Button(self, text="Submit", background="#6FCF97", \
+                        command=self.submitButtonCallback)
         submitButton.grid(row=4, column=4, pady=10, sticky="se")
 
 
+    def submitButtonCallback(self):
+        # Write
+        return
+
     def cancelButtonCallback(self):
         self.controller.show_frame("IdlePage")
+
+
+    def populate(self):
+        # Read
+        return

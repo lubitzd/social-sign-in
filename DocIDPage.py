@@ -55,3 +55,7 @@ class DocIDPage(tk.Frame):
         self.lc.init_sheets(self.masterDocIDVar.get(), self.danceDocIDVar.get(), self.earlyDocIDVar.get())
         self.controller.not_busy()
         self.controller.show_frame("IdlePage")
+
+
+    def populate(self):
+        return

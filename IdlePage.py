@@ -79,7 +79,13 @@ class IdlePage(tk.Frame):
         # If we've already seen this person, don't calc amt (i.e. display $0)
         self.lc.set_calculate_amt(not already_logged)
 
+        self.lc.set_current_row(index)
         
         self.controller.not_busy()
         self.controller.show_frame("RegPage")
+
+
+    def populate(self):
+        self.nameVar.set("")
+        self.hideErrorLabel()
 
