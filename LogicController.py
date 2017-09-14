@@ -16,8 +16,27 @@ class LogicController:
     def set_calculate_amt(self, calc_in):
         self.calculate_amt = calc_in
 
+    def get_calculate_amt(self):
+        return self.calculate_amt
+
+
     def set_current_row(self, row_in):
         self.current_row = row_in
+
+    def get_current_row(self):
+        return self.current_row
+
+    
+    def get_column_index(self, sheet, label):
+        return self.docs[sheet].get_column_index(label)
+
+
+    def read_row(self, sheet, index):
+        data = self.docs[sheet].read(str(index) + ":" + str(index))
+        if len(data) > 0:
+            # The [0] unpacks the list from the list
+            return data[0]
+        return data
 
 
     def find_open_row(self, sheet):

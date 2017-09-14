@@ -60,6 +60,7 @@ class IdlePage(tk.Frame):
     def newAccountCallback(self):
         self.controller.busy()
         row = self.lc.find_open_row("master")
+        self.lc.set_calculate_amt(True)
         self.lc.set_current_row(row)
         self.controller.not_busy()
         self.controller.show_frame("RegPage")

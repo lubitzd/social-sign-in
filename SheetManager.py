@@ -89,12 +89,16 @@ class SheetManager:
 
     # Searches first row (header) for specified label
     # returns letter index of desired column
-    def get_column_letter(self, label):
+    def get_column_index(self, label):
         for i in range(len(self.headers)):
             if self.headers[i] == label:
-                return letter(i)
+                return i
         # Not found
         return 0
+
+
+    def get_column_letter(self, label):
+        return letter(self.get_column_index(label))
 
     
 
