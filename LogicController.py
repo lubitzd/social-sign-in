@@ -13,11 +13,11 @@ class LogicController:
                       "early" : self.early_doc}
 
 
-    def set_calculate_amt(self, calc_in):
-        self.calculate_amt = calc_in
+    def set_on_dance_sheet(self, on_dance_sheet_in):
+        self.on_dance_sheet = on_dance_sheet_in
 
-    def get_calculate_amt(self):
-        return self.calculate_amt
+    def get_on_dance_sheet(self):
+        return self.on_dance_sheet
 
 
     def set_current_row(self, row_in):

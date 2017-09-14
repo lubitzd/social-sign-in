@@ -33,9 +33,9 @@ class RegPage(tk.Frame):
         membershipFrame = tk.Frame(self, borderwidth=1, relief=tk.GROOVE)
         membershipFrame.grid(row=0, rowspan=2, column=3, columnspan=2, pady=5)
         # Club Member
-        self.clubMemberVar = tk.StringVar()
+        self.clubMemberVar = tk.IntVar()
         memberCheckbutton = tk.Checkbutton(membershipFrame, text="Member of Club", \
-                            variable=self.clubMemberVar, onvalue="member", offvalue="")
+                            variable=self.clubMemberVar)
         memberCheckbutton.grid()
         # Member Type
         self.memberTypeVar = tk.StringVar()
@@ -79,7 +79,6 @@ class RegPage(tk.Frame):
 
     def populate(self):
         master_row = self.lc.get_current_row()
-        calc_amt = self.lc.get_calculate_amt()
 
         # Read the master doc
         data = self.lc.read_row("master", master_row)
@@ -95,5 +94,32 @@ class RegPage(tk.Frame):
         rcs_index = self.lc.get_column_index("master", "RCS ID")
         self.rcsVar.set(data[rcs_index])
 
+        # RFID num
+        rfid_index = self.lc.get_column_index("master", "RFID")
+        self.rfidNumVar.set(data[rfid_index])
+
+        # Club member CBox & Member type menu
+        member_status_index = self.lc.get_column_index("master", "Member Status")
+        self.clubMemberVar.set("member" in data[member_status_index])
+        self.memberTypeVar.set(data[member_status_index].replace("member", "").strip())
+
+        # Early sign up CBox
+        #early_index = self.lc.get_column_index("early", "")
+        #self.earlyVar
+
+        # Email list CBox
+        email_index = self.lc.get_column_index("master", "On Email List")
+        self.emailVar.set("y" in data[email_index])
+
+        # Amount Due
+        self.amountDueNumVar.set(self.calulate_amt())
+
+
+    def calulate_amt(self):
+        if self.lc.get_on_dance_sheet() or self.clubMemberVar.get():
+            return 0
+        if self.earlyVar.get():
+            return 2
+        return 5
 
 

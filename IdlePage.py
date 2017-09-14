@@ -60,7 +60,7 @@ class IdlePage(tk.Frame):
     def newAccountCallback(self):
         self.controller.busy()
         row = self.lc.find_open_row("master")
-        self.lc.set_calculate_amt(True)
+        self.lc.set_on_dance_sheet(False)
         self.lc.set_current_row(row)
         self.controller.not_busy()
         self.controller.show_frame("RegPage")
@@ -77,8 +77,8 @@ class IdlePage(tk.Frame):
             self.controller.not_busy()
             return
 
-        # If we've already seen this person, don't calc amt (i.e. display $0)
-        self.lc.set_calculate_amt(not already_logged)
+        # If we've already seen this person
+        self.lc.set_on_dance_sheet(already_logged)
 
         self.lc.set_current_row(index)
         
