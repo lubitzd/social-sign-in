@@ -67,14 +67,31 @@ class RegPage(tk.Frame):
         submitButton.grid(row=4, column=4, pady=10, sticky="se")
 
 
-    def submitButtonCallback(self):
-        # Write
-        return
 
     def cancelButtonCallback(self):
         self.controller.show_frame("IdlePage")
 
 
-    def populate(self):
-        # Read
+    def submitButtonCallback(self):
+        # Write
         return
+
+
+    def populate(self):
+        master_row = self.lc.get_current_row()
+        calc_amt = self.lc.get_calculate_amt()
+
+        # Read the master doc
+        data = self.lc.read_row("master", master_row)
+        if __debug__:
+            print "populating reg page with " + str(data)
+
+
+        # Name field
+      #  if "Name" in data       
+        name_index = self.lc.get_column_index("master", "Name")
+        self.nameVar.set(data[name_index])
+
+
+
+
