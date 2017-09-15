@@ -11,6 +11,17 @@ class LogicController:
         self.early_doc = SM.SheetManager(early)
         self.docs = {"master" : self.master_doc, "dance" : self.dance_doc, \
                       "early" : self.early_doc}
+        # Download the early sheet, as it won't change
+        rcs_col_letter = self.get_column_letter("early", "RCS ID")
+        name_col_letter = self.get_column_letter("early", "Name")
+
+        self.early_rcs_col = self.read_column("early", rcs_col_letter)
+        self.early_name_col = self.read_column("early", name_col_letter)
+
+        # Expand both lists to the size of the other one
+        # They can't get shorter, so both get set to the size of the longer one
+        self.inflate_list(self.early_rcs_col, len(self.early_name_col), "")
+        self.inflate_list(self.early_name_col, len(self.early_rcs_col), "")
 
 
     def set_on_dance_sheet(self, on_dance_sheet_in):
@@ -51,7 +62,8 @@ class LogicController:
         return data
 
     def read_column(self, sheet, col):
-        return [x[0] for x in self.docs[sheet].read(col + ":" + col)]
+        # If you can figure out what this does, good for you
+        return [x[0] if len(x) else x for x in self.docs[sheet].read(col + ":" + col)]
 
 
     def find_open_row(self, sheet):
@@ -68,9 +80,9 @@ class LogicController:
     def find_row(self, sheet, heading, label):
         doc = self.docs[sheet]
         col = doc.get_column_letter(heading)
-        # the list comp here 'unpacks' each one-element list
-        # to make a list of vals of the column
-        # it also converts to lower case for easier matching
+        # The list comp here 'unpacks' each one-element list
+        #  to make a list of vals of the column
+        # It also converts to lower case for easier matching
         column = [x[0].lower() for x in doc.read(col + ":" + col)]
         try:
             # Sheets are 1-indexed

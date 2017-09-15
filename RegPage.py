@@ -78,6 +78,8 @@ class RegPage(tk.Frame):
 
 
     def populate(self):
+        self.controller.busy()
+
         master_row = self.lc.get_current_row()
 
         # Read the master doc
@@ -106,12 +108,6 @@ class RegPage(tk.Frame):
         # Early sign up CBox
         self.earlyVar.set(self.is_early_bird())
 
-# NEW USERS NOT HANDLED YET (BOTH BUTTON AND SCAN)
-# also maybe run the function every keystroke in rcs id
-        #early_index = self.lc.get_column_index("early", "")
-        
-        #self.earlyVar.set()
-
         # Email list CBox
         email_index = self.lc.get_column_index("master", "On Email List")
         self.emailVar.set("y" in data[email_index])
@@ -119,31 +115,28 @@ class RegPage(tk.Frame):
         # Amount Due
         self.amountDueNumVar.set(self.calulate_amt())
 
+        self.controller.not_busy()
+
 
     def is_early_bird(self):
-        # First read the early list
-        rcs_col_letter = self.lc.get_column_letter("early", "RCS ID")
-        name_col_letter = self.lc.get_column_letter("early", "Name")
+        # There shouldn't be any blank entries,
+        #  as both questions are required on the form.
+        # Go through the rcs ids, if it's N/A look at the name
+        for i in range(1, len(self.lc.early_rcs_col)):
+            # All RCS IDs are at least 5 characters
+            if len(self.lc.early_rcs_col[i]) > 4:
+                # Compare the ids
+                if self.lc.early_rcs_col[i] == self.rcsVar.get():
+                    return True
+            else:
+                # Compare the names
+                if self.lc.early_name_col[i].lower() == self.nameVar.get().lower():
+                    return True
 
-        rcs_col = self.lc.read_column("early", rcs_col_letter)
-        name_col = self.lc.read_column("early", name_col_letter)
+        return False
 
-        # TODO: go through one by one the rcs ids, if it's N/A look at the name
-
-
-
-#        early_row_index = find_row("early", "RCS ID", self.rcsVar.get())
-        # If the RCS ID was found in the early list
-        # I.e., user is a student, was on master list, signed up early
-#        if early_row_index >= 0:
-#            return True
-
-        # RCS ID not on early list
-#        early_row_index = find_row("early", "Name", self.nameVar.get())
-        # If the Name was found in the early list
-#        if early_row_index >= 0:
-            # I.e., user is not a student, was on master list, signed up early
-#            return True
+# (barring already signed in)
+# call this function every update of the rcs or name fields (too slow?)
 
 
     def calulate_amt(self):
