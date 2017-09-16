@@ -103,9 +103,43 @@ class RegPage(tk.Frame):
         self.controller.show_frame("IdlePage")
 
 
+    # Write data in GUI to master and dance sheets
     def submitButtonCallback(self):
-        # Write
-        return
+        self.controller.busy()
+
+        master_row = self.lc.get_current_row()
+
+        # Read the master doc
+        data = self.lc.read_row("master", master_row)
+        self.lc.inflate_list(data, self.lc.get_headers_length("master"), "")
+
+        # Calculate total amt spent  
+        total_amt_index = self.lc.get_column_index("master", "Total amount payed")
+        if data[total_amt_index] == "":
+            total_amt = 0
+        else:
+            total_amt = int(data[total_amt_index])
+        total_amt += int(self.amountDueNumVar.get())
+
+        # Calculate socials attended
+        socials_index = self.lc.get_column_index("master", "Socials Attended")
+        if data[socials_index] == "":
+            socials_att = 0
+        else:
+            socials_att = int(data[socials_index])
+        if not self.lc.get_on_dance_sheet():
+            socials_att += 1
+
+        # Set up data to export to master
+        member_status = self.memberTypeVar.get() + (" member" if self.clubMemberVar.get() else "")
+        data = [[int(self.rfidNumVar.get()), self.nameVar.get(), self.rcsVar.get(), member_status, \
+                "y" if self.emailVar.get() else "n", socials_att, total_amt]]
+
+        self.lc.write_row("master", self.lc.get_current_row(), data)
+
+        self.controller.not_busy()
+        self.controller.show_frame("IdlePage")
+        
 
 
     def populate(self):
