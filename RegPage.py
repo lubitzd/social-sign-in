@@ -14,6 +14,7 @@ class RegPage(tk.Frame):
         # Name
         self.nameVar = tk.StringVar()
         nameEntry = tk.Entry(self, textvariable=self.nameVar)
+        self.nameVar.trace("w", self.nameUpdatedCallback)
         nameEntry.grid(row=0, column=1, columnspan=2, padx=5, sticky="sw")
 
         rcsLabel = tk.Label(self, text="RCS ID/Email:")
@@ -21,6 +22,7 @@ class RegPage(tk.Frame):
         # RCS (or email)
         self.rcsVar = tk.StringVar()
         rcsEntry = tk.Entry(self, textvariable=self.rcsVar)
+        self.rcsVar.trace("w", self.rcsUpdatedCallback)
         rcsEntry.grid(row=1, column=1, columnspan=2, padx=5, sticky="nw")
 
         rfidLabel = tk.Label(self, text="RFID #:")
@@ -70,6 +72,14 @@ class RegPage(tk.Frame):
         submitButton.grid(row=4, column=4, pady=10, sticky="se")
 
 
+    def rcsUpdatedCallback(self, *args):
+        self.earlyVar.set(self.is_early_bird())
+        self.amountDueNumVar.set(self.calulate_amt())
+
+    def nameUpdatedCallback(self, *args):
+        if self.rcsVar.get() == "":
+            self.earlyVar.set(self.is_early_bird())
+            self.amountDueNumVar.set(self.calulate_amt())
 
     def memberBoxCallback(self):
         # If club member is deselected while the type is Former, switch away from Former
@@ -147,7 +157,7 @@ class RegPage(tk.Frame):
             # If it's an RCS ID
             if not self.lc.early_rcs_col[i].lower() == "n/a":
                 # Compare the ids
-                if self.lc.early_rcs_col[i] == self.rcsVar.get():
+                if self.lc.early_rcs_col[i].lower() == self.rcsVar.get().lower():
                     return True
             else:
                 # Compare the names
@@ -155,8 +165,6 @@ class RegPage(tk.Frame):
                     return True
 
         return False
-
-# call this function every update of the rcs or name fields (too slow?)
 
 
     def calulate_amt(self):
