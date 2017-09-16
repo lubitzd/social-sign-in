@@ -34,17 +34,20 @@ class RegPage(tk.Frame):
         membershipFrame.grid(row=0, rowspan=2, column=3, columnspan=2, pady=5)
         # Club Member
         self.clubMemberVar = tk.IntVar()
-        memberCheckbutton = tk.Checkbutton(membershipFrame, text="Member of Club", \
-                            variable=self.clubMemberVar)
-        memberCheckbutton.grid()
+        self.memberCheckbutton = tk.Checkbutton(membershipFrame, text="Member of Club", \
+                            variable=self.clubMemberVar, command=self.memberBoxCallback)
+        self.memberCheckbutton.grid()
         # Member Type
         self.memberTypeVar = tk.StringVar()
-        memberType = tk.OptionMenu(membershipFrame, self.memberTypeVar, "Student", "Community", "Former")
+        options = ["Student", "Community", "Former"]
+        memberType = tk.OptionMenu(membershipFrame, self.memberTypeVar, \
+                                   *options, command=self.memberTypeCallback)
         memberType.grid()
 
         # Early
         self.earlyVar = tk.IntVar()
-        earlyCheckbutton = tk.Checkbutton(self, text="Signed Up Early", variable=self.earlyVar)
+        earlyCheckbutton = tk.Checkbutton(self, text="Signed Up Early", \
+                                        variable=self.earlyVar, command=self.earlyBoxCallback)
         earlyCheckbutton.grid(row=2, column=3, columnspan=2, sticky="w")
 
         # Email
@@ -67,6 +70,24 @@ class RegPage(tk.Frame):
         submitButton.grid(row=4, column=4, pady=10, sticky="se")
 
 
+
+    def memberBoxCallback(self):
+        # If club member is deselected while the type is Former, switch away from Former
+        if self.clubMemberVar.get() == 0 and self.memberTypeVar.get() == "Former":
+            self.memberTypeVar.set("Community")
+        # Every time button is toggled, recalc
+        self.amountDueNumVar.set(self.calulate_amt())
+
+    def memberTypeCallback(self, member_type):
+        if member_type == "Former":
+            self.memberCheckbutton.flash()
+            self.memberCheckbutton.select()
+            self.amountDueNumVar.set(self.calulate_amt())
+
+    # The Operator can override the automatic early checker
+    def earlyBoxCallback(self):
+        self.amountDueNumVar.set(self.calulate_amt())
+        
 
     def cancelButtonCallback(self):
         self.controller.show_frame("IdlePage")
@@ -123,8 +144,8 @@ class RegPage(tk.Frame):
         #  as both questions are required on the form.
         # Go through the rcs ids, if it's N/A look at the name
         for i in range(1, len(self.lc.early_rcs_col)):
-            # All RCS IDs are at least 5 characters
-            if len(self.lc.early_rcs_col[i]) > 4:
+            # If it's an RCS ID
+            if not self.lc.early_rcs_col[i].lower() == "n/a":
                 # Compare the ids
                 if self.lc.early_rcs_col[i] == self.rcsVar.get():
                     return True
@@ -135,7 +156,6 @@ class RegPage(tk.Frame):
 
         return False
 
-# (barring already signed in)
 # call this function every update of the rcs or name fields (too slow?)
 
 

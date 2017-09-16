@@ -24,6 +24,8 @@ class LogicController:
         self.inflate_list(self.early_name_col, len(self.early_rcs_col), "")
 
 
+    # Gets set when leaving the Idle Page (on either search or new account)
+    # Checks for user's [name or RFID, whatever the search term was] on dance sheet
     def set_on_dance_sheet(self, on_dance_sheet_in):
         self.on_dance_sheet = on_dance_sheet_in
 
