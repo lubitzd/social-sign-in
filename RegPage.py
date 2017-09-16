@@ -132,10 +132,28 @@ class RegPage(tk.Frame):
 
         # Set up data to export to master
         member_status = self.memberTypeVar.get() + (" member" if self.clubMemberVar.get() else "")
-        data = [[int(self.rfidNumVar.get()), self.nameVar.get(), self.rcsVar.get(), member_status, \
+        data = [[self.rfidNumVar.get(), self.nameVar.get(), self.rcsVar.get(), member_status, \
                 "y" if self.emailVar.get() else "n", socials_att, total_amt]]
 
         self.lc.write_row("master", self.lc.get_current_row(), data)
+
+        # First find the row in the dance sheet to save to if they're already on it
+        if self.lc.get_on_dance_sheet():
+            # If they have an RFID, search for that
+            if not self.rfidNumVar.get() == "":
+                dance_row = self.lc.find_row("dance", "RFID", self.rfidNumVar.get())
+            else:
+                # Otherwise search by name
+                dance_row = self.lc.find_row("dance", "Name", self.nameVar.get())
+        else:
+            # otherwise find the net blank row
+            dance_row = self.lc.find_open_row("dance")
+            
+        # Set up data to export to dance
+        data = [[self.rfidNumVar.get(), self.nameVar.get(), member_status, \
+                 "y" if self.emailVar.get() else "n", "y" if self.earlyVar.get() else "n", \
+                 int(self.amountDueNumVar.get())]]
+        self.lc.write_row("dance", dance_row, data)
 
         self.controller.not_busy()
         self.controller.show_frame("IdlePage")
