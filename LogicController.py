@@ -63,6 +63,9 @@ class LogicController:
             return data[0]
         return data
 
+    def write_row(self, sheet, row, data):
+        self.docs[sheet].write(str(row) + ":" + str(row), data)
+
     def read_column(self, sheet, col):
         # If you can figure out what this does, good for you
         return [x[0] if len(x) else x for x in self.docs[sheet].read(col + ":" + col)]
