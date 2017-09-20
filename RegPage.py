@@ -29,7 +29,8 @@ class RegPage(tk.Frame):
         rfidLabel.grid(row=2, column=0, padx=5, sticky="e")
         # RFID Num
         self.rfidNumVar = tk.StringVar()
-        rfidNumLabel = tk.Label(self, textvariable=self.rfidNumVar, font=self.controller.customFont)
+
+        rfidNumLabel = tk.Entry(self, textvariable=self.rfidNumVar, font=self.controller.customFont)
         rfidNumLabel.grid(row=2, column=1, sticky="w")
 
         membershipFrame = tk.Frame(self, borderwidth=1, relief=tk.GROOVE)
