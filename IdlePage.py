@@ -20,30 +20,33 @@ class IdlePage(tk.Frame):
         self.columnconfigure(0, weight=1)
         self.columnconfigure(2, weight=1)
 
-        scanLabel = tk.Label(self, text="Scan a card", font=tkFont.Font(size=14))
+        scanLabel = tk.Label(self, text="Scan a card", font=self.controller.customFontLarge)
         scanLabel.grid(row=0, column=1)
 
-        or1Label = tk.Label(self, text="or")
+        or1Label = tk.Label(self, text="or", font=self.controller.customFont)
         or1Label.grid(row=1, column=1, pady=5)
 
-        newButton = tk.Button(self, text="New Account", command=self.newAccountCallback)
+        newButton = tk.Button(self, text="New Account", command=self.newAccountCallback, \
+                            font=self.controller.customFont)
         newButton.grid(row=2, column=1, ipady=5, ipadx=10)
 
-        or2Label = tk.Label(self, text="or")
+        or2Label = tk.Label(self, text="or", font=self.controller.customFont)
         or2Label.grid(row=3, column=1, pady=5)
 
-        nameLabel = tk.Label(self, text="Name:")
+        nameLabel = tk.Label(self, text="Name:", font=self.controller.customFont)
         nameLabel.grid(row=4, column=0, sticky="e")
 
         self.nameVar = tk.StringVar()
-        nameEntry = tk.Entry(self, textvariable=self.nameVar)
+        nameEntry = tk.Entry(self, textvariable=self.nameVar, font=self.controller.customFont)
         nameEntry.grid(row=4, column=1, padx=5)
 
-        searchButton = tk.Button(self, text="Search", command=self.searchByNameCallback)
+        searchButton = tk.Button(self, text="Search", command=self.searchByNameCallback, \
+                                font=self.controller.customFont)
         searchButton.grid(row=4, column=2, sticky="w")
 
         self.errorLabelVar = tk.StringVar()
-        self.errorLabel = tk.Label(self, textvariable=self.errorLabelVar, fg="#EB1717")
+        self.errorLabel = tk.Label(self, textvariable=self.errorLabelVar, fg="#EB1717", \
+                                   font=self.controller.customFont)
         self.errorLabel.grid(row=5, column=1, pady=2, sticky="n")
         self.hideErrorLabel()
 
