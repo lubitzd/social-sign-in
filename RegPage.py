@@ -25,8 +25,8 @@ class RegPage(tk.Frame):
         self.rcsVar.trace("w", self.rcsUpdatedCallback)
         rcsEntry.grid(row=1, column=1, columnspan=2, padx=5, sticky="nw")
 
-        rfidLabel = tk.Label(self, text="RFID #:", font=self.controller.customFont)
-        rfidLabel.grid(row=2, column=0, padx=5, sticky="e")
+        rfidEntry = tk.Label(self, text="RFID #:", font=self.controller.customFont)
+        rfidEntry.grid(row=2, column=0, padx=5, sticky="e")
         # RFID Num
         self.rfidNumVar = tk.StringVar()
 
