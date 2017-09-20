@@ -16,6 +16,10 @@ class GuiHandler(tk.Tk):
         # use to interact with the sheets
         self.lc = LC.LogicController()
 
+        self.tk.call('tk', 'scaling', '-displayof', '.', 15.0)
+        self.customFont = tkFont.Font(size=12)
+        self.customFontLarge = tkFont.Font(size=16)
+
         # the container is where we'll stack a bunch of frames
         # on top of each other, then the one we want visible
         # will be raised above the others
