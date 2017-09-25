@@ -63,11 +63,11 @@ class RegPage(tk.Frame):
         emailCheckbutton.grid(row=3, column=3, columnspan=2, sticky="w")
 
         amountDueLabel = tk.Label(self, text="Amount Due: $", font=self.controller.customFontLarge)
-        amountDueLabel.grid(row=4, column=1)
+        amountDueLabel.grid(row=4, column=1, sticky="w")
         # Amount Due Num
         self.amountDueNumVar = tk.IntVar()
         amountDueNumLabel = tk.Label(self, textvariable=self.amountDueNumVar, font=self.controller.customFontLarge)
-        amountDueNumLabel.grid(row=4, column=2, sticky="w")
+        amountDueNumLabel.grid(row=4, column=1, sticky="e", padx=20)
 
         cancelButton = tk.Button(self, text="Cancel", background="#EB5757", \
                         command=self.cancelButtonCallback, font=self.controller.customFont)
