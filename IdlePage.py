@@ -61,6 +61,8 @@ class IdlePage(tk.Frame):
 
     # Find the next open row in the master sheet
     def newAccountCallback(self):
+        # Stop listening for RFID cards
+        self.controller.ser.set_listen(False)
         self.controller.busy()
         row = self.lc.find_open_row("master")
         self.lc.set_on_dance_sheet(False)
@@ -70,6 +72,8 @@ class IdlePage(tk.Frame):
 
 
     def searchByNameCallback(self):
+        # Stop listening for RFID cards
+        self.controller.ser.set_listen(False)
         self.controller.busy()
         (already_logged, index) = self.lc.search("Name", self.nameVar.get())
 
@@ -78,6 +82,8 @@ class IdlePage(tk.Frame):
             # Display error, then do nothing
             self.showErrorLabel()
             self.controller.not_busy()
+            # Start listening for RFID cards again
+            self.controller.ser.set_listen(True)
             return
 
         # If we've already seen this person
@@ -92,4 +98,5 @@ class IdlePage(tk.Frame):
     def populate(self):
         self.nameVar.set("")
         self.hideErrorLabel()
+        self.after(10, self.controller.ser.read_serial)
 

@@ -12,7 +12,10 @@ class GuiHandler(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
-        # First set up the Logic Controller, which each GUI will
+        # Create the Serial Handler
+        self.ser = SerialHandler.SerialHandler("Arduino")
+
+        # Set up the Logic Controller, which each GUI will
         # use to interact with the sheets
         self.lc = LC.LogicController()
 
