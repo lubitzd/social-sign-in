@@ -1,7 +1,9 @@
 import Tkinter as tk
 import tkFont
+import Queue
 
 import LogicController as LC
+import SerialThread
 import DocIDPage
 import IdlePage
 import RegPage
@@ -12,8 +14,10 @@ class GuiHandler(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
-        # Create the Serial Handler
-        self.ser = SerialHandler.SerialHandler("Arduino")
+        # Create the Serial Thread
+        self.queue = Queue.Queue()
+        self.ser_thread = SerialThread.SerialThread("Arduino", self.queue)
+        self.ser_thread.start()
 
         # Set up the Logic Controller, which each GUI will
         # use to interact with the sheets

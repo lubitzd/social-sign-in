@@ -24,16 +24,27 @@ class SerialThread(threading.Thread):
     def __init__(self, substr, queue):
         threading.Thread.__init__(self)
         self.queue = queue
-        self.port = self.find_port(substr)
+        self.port = find_port(substr)
+        self.disabled = self.port == None
+        self.listen = False
         
+    def set_listen(self, lis):
+        self.listen = lis
+        
+    def is_listening(self):
+        return self.listen
     
+    def is_disabled(self):
+        return self.disabled
     
     def run(self):
+        if self.disabled:
+            return
+            
         self.ser = serial.Serial(self.port, 9600, timeout=0)
-#https://stackoverflow.com/questions/16938647/python-code-for-serial-data-to-print-on-window
         
         while True:
-            if self.ser.inWaiting():
+            if self.ser.inWaiting() and self.listen:
                 msg = self.ser.readline(s.inWaiting())
                 self.queue.put(msg)
 
