@@ -5,6 +5,7 @@ import serial
 import serial.tools.list_ports
 import threading
 import Queue
+import time
 
 
 def find_port(substr):
@@ -36,15 +37,19 @@ class SerialThread(threading.Thread):
     
     def is_disabled(self):
         return self.disabled
+
+    def stop(self):
+        if __debug__:
+            print "Stopping thread"
+        self.disabled = True
     
     def run(self):
-        if self.disabled:
-            return
-            
-        self.ser = serial.Serial(self.port, 9600, timeout=0)
+        if not self.disabled:
+            self.ser = serial.Serial(self.port, 9600, timeout=0)
         
-        while True:
+        while not self.disabled:
             if self.ser.inWaiting() and self.listen:
-                msg = self.ser.readline(s.inWaiting())
+                msg = self.ser.readline(self.ser.inWaiting())
                 self.queue.put(msg)
+            time.sleep(0.5)
 

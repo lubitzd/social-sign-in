@@ -1,6 +1,7 @@
 import Tkinter as tk
 import tkFont
 import Queue
+import time
 
 
 # Hangs out and then finds what row in the sheet to pull
@@ -97,9 +98,11 @@ class IdlePage(tk.Frame):
         
         
     def process_serial(self):
-        if self.queue.qsize():
+        if self.controller.queue.qsize():
+            # Wait for a bit to let the whole message arrive
+            time.sleep(1)
             try:
-                message = self.queue.get()
+                message = self.controller.queue.get()
             except Queue.Empty:
                 pass
             
