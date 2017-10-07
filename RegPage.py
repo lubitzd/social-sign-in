@@ -185,8 +185,11 @@ class RegPage(tk.Frame):
         self.rcsVar.set(data[rcs_index])
 
         # RFID num
-        rfid_index = self.lc.get_column_index("master", "RFID")
-        self.rfidNumVar.set(data[rfid_index])
+        if len(self.lc.get_RFID()) > 0:
+            self.rfidNumVar.set(self.lc.get_RFID())
+        else:
+            rfid_index = self.lc.get_column_index("master", "RFID")
+            self.rfidNumVar.set(data[rfid_index])
 
         # Club member CBox & Member type menu
         member_status_index = self.lc.get_column_index("master", "Member Status")

@@ -69,11 +69,15 @@ class IdlePage(tk.Frame):
         row = self.lc.find_open_row("master")
         self.lc.set_on_dance_sheet(False)
         self.lc.set_current_row(row)
+        self.lc.set_RFID("")
         self.controller.not_busy()
         self.controller.show_frame("RegPage")
 
 
     def searchByNameCallback(self):
+        if __debug__:
+            print "Searching for " + self.nameVar.get() + " in Name"
+        
         # Stop listening for RFID cards
         self.controller.ser_thread.set_listen(False)
         self.controller.busy()
@@ -88,10 +92,36 @@ class IdlePage(tk.Frame):
             self.controller.ser_thread.set_listen(True)
             return
 
+        self.lc.set_RFID("")
+        
         # If we've already seen this person
         self.lc.set_on_dance_sheet(already_logged)
 
         self.lc.set_current_row(index)
+        
+        self.controller.not_busy()
+        self.controller.show_frame("RegPage")
+
+    def searchByRFID(self, rfid):
+        if __debug__:
+            print "Searching for " + rfid + " in RFID"
+        
+        # Stop listening for RFID cards
+        self.controller.ser_thread.set_listen(False)
+        self.controller.busy()
+        (already_logged, index) = self.lc.search("RFID", rfid)
+
+        # If name not found
+        if index == -1:
+            # New account with RFID filled in
+            self.lc.set_RFID(rfid)
+            self.lc.set_on_dance_sheet(False)
+            self.lc.set_current_row(self.lc.find_open_row("master"))
+        else:
+            self.lc.set_RFID("")
+            # If we've already seen this person
+            self.lc.set_on_dance_sheet(already_logged)
+            self.lc.set_current_row(index)
         
         self.controller.not_busy()
         self.controller.show_frame("RegPage")
@@ -105,8 +135,10 @@ class IdlePage(tk.Frame):
                 pass
             
             if len(message) > 0:
-                # Parse, then search
-                print message
+                # Search
+                message = message.strip("\n")
+                message = message.strip("\r")
+                self.searchByRFID(message)
         
         if self.controller.ser_thread.is_listening():
             self.after(100, self.process_serial)

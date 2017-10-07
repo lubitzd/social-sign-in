@@ -33,6 +33,13 @@ class LogicController:
         return self.on_dance_sheet
 
 
+    def get_RFID(self):
+        return self.RFID
+
+    def set_RFID(self, rfid):
+        self.RFID = rfid
+
+
     def set_current_row(self, row_in):
         self.current_row = row_in
 
@@ -88,7 +95,9 @@ class LogicController:
         # The list comp here 'unpacks' each one-element list
         #  to make a list of vals of the column
         # It also converts to lower case for easier matching
-        column = [x[0].lower() for x in doc.read(col + ":" + col)]
+        if __debug__:
+            print "column is " + str(doc.read(col + ":" + col)) + " from " + sheet
+        column = [x[0].lower() if len(x) else "" for x in doc.read(col + ":" + col)]
         try:
             # Sheets are 1-indexed
             index = column.index(label.lower()) + 1
