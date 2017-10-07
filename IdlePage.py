@@ -99,8 +99,6 @@ class IdlePage(tk.Frame):
         
     def process_serial(self):
         if self.controller.queue.qsize():
-            # Wait for a bit to let the whole message arrive
-            time.sleep(1)
             try:
                 message = self.controller.queue.get()
             except Queue.Empty:

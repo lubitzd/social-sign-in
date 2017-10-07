@@ -48,8 +48,9 @@ class SerialThread(threading.Thread):
             self.ser = serial.Serial(self.port, 9600, timeout=0)
         
         while not self.disabled:
-            if self.ser.inWaiting() and self.listen:
+            if self.ser.inWaiting():
                 msg = self.ser.readline(self.ser.inWaiting())
-                self.queue.put(msg)
-            time.sleep(0.5)
+                if self.listen:
+                    self.queue.put(msg)
+            time.sleep(0.75)
 
