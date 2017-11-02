@@ -44,10 +44,10 @@ class RegPage(tk.Frame):
         # Member Type
         self.memberTypeVar = tk.StringVar()
         options = ["Student", "Community", "Former"]
-        memberType = tk.OptionMenu(membershipFrame, self.memberTypeVar, \
+        self.memberTypeMenu = tk.OptionMenu(membershipFrame, self.memberTypeVar, \
                                    *options, command=self.memberTypeCallback)
-        memberType['menu'].config(font=self.controller.customFont)
-        memberType.grid()
+        self.memberTypeMenu['menu'].config(font=self.controller.customFont)
+        self.memberTypeMenu.grid()
 
         # Early
         self.earlyVar = tk.IntVar()
@@ -191,10 +191,13 @@ class RegPage(tk.Frame):
             rfid_index = self.lc.get_column_index("master", "RFID")
             self.rfidNumVar.set(data[rfid_index])
 
-        # Club member CBox & Member type menu
+        # Club member CBox
         member_status_index = self.lc.get_column_index("master", "Member Status")
         self.clubMemberVar.set("member" in data[member_status_index])
-        self.memberTypeVar.set(data[member_status_index].replace("member", "").strip())
+        # Member type menu
+        memberType = data[member_status_index].replace("member", "").strip()
+        self.memberTypeVar.set(memberType if len(memberType) else
+                               self.memberTypeMenu["menu"].entrycget(0, "label"))
 
         # Early sign up CBox
         self.earlyVar.set(self.is_early_bird())
