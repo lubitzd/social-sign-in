@@ -52,6 +52,10 @@ class DocIDPage(tk.Frame):
 
     def goButtonCallback(self):
         self.controller.busy()
+        # Print out Doc IDs so if user restarts, IDs are accessible
+        print "Master: " + self.masterDocIDVar.get()
+        print "Dance: " + self.danceDocIDVar.get()
+        print "Early: " + self.earlyDocIDVar.get()
         self.lc.init_sheets(self.masterDocIDVar.get(), self.danceDocIDVar.get(), self.earlyDocIDVar.get())
         self.controller.not_busy()
         self.controller.show_frame("IdlePage")
