@@ -48,6 +48,23 @@ class DocIDPage(tk.Frame):
         
         goButton = tk.Button(self, text="Go", command=self.goButtonCallback, font=self.controller.customFont)
         goButton.grid(row=4, column=0, columnspan=2)
+        
+        # Read Doc IDs from file if they are there
+        try:
+            with open("ids.txt", "r+") as f:
+                masterText = f.readline().strip("\n")
+                if len(masterText):
+                    self.masterDocIDVar.set(masterText)
+                    
+                danceText = f.readline().strip("\n")
+                if len(danceText):
+                    self.danceDocIDVar.set(danceText)
+                    
+                earlyText = f.readline().strip("\n")
+                if len(earlyText):
+                    self.earlyDocIDVar.set(earlyText)
+        except:
+            pass
 
 
     def goButtonCallback(self):
@@ -57,6 +74,12 @@ class DocIDPage(tk.Frame):
         print "Dance: " + self.danceDocIDVar.get()
         print "Early: " + self.earlyDocIDVar.get()
         self.lc.init_sheets(self.masterDocIDVar.get(), self.danceDocIDVar.get(), self.earlyDocIDVar.get())
+        # Write Doc IDs to file
+        with open("ids.txt", "w+") as f:
+            f.write(self.masterDocIDVar.get() + "\n")
+            f.write(self.danceDocIDVar.get() + "\n")
+            f.write(self.earlyDocIDVar.get() + "\n")
+            
         self.controller.not_busy()
         self.controller.show_frame("IdlePage")
 
