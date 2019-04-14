@@ -231,10 +231,6 @@ class RegPage(tk.Frame):
 
 
     def calulate_amt(self):
-        if self.lc.get_on_dance_sheet() or self.clubMemberVar.get():
-            return 0
-        if self.earlyVar.get():
-            return 2
-        return 5
+        return 0
 
 
